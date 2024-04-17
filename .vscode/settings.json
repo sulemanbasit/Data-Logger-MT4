@@ -1,0 +1,9 @@
+{
+    "C_Cpp.errorSquiggles": "disabled",
+    "files.associations": {
+        "*.mq4": "c"
+    },
+    "C_Cpp.default.includePath": [
+        "/Users/dianbasit/Library/Application Support/net.metaquotes.wine.metatrader4/drive_c/users/crossover/AppData/Roaming/MetaQuotes/Terminal/Include"
+    ]
+}
