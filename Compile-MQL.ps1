@@ -1,5 +1,5 @@
 #gets the File To Compile as an external parameter... Defaults to a Test file...
-Param( $FileToCompile = "C:\Users\Acme\AppData\Roaming\MetaQuotes\Terminal\83D4764E0403A8685E84D6FCAB361879\MQL5\Experts\Test.mq5")
+Param( $FileToCompile = "C:\Users\asbas\AppData\Roaming\MetaQuotes\Terminal\03C90BB4CD8026339921C49182082508\MQL4\Experts\Test.mq4")
 
 #cleans the terminal screen and sets the log file name...
 Clear-Host
@@ -16,10 +16,10 @@ if ($FileToCompile.Contains(" ")) {
 }
 
 #first of all, kill MT Terminal (if running)... otherwise it will not see the new compiled version of the code...
-Get-Process -Name terminal64 -ErrorAction SilentlyContinue | Where-Object {$_.Id -gt 0} | Stop-Process
+Get-Process -Name terminal -ErrorAction SilentlyContinue | Where-Object {$_.Id -gt 0} | Stop-Process
 
 #fires up the Metaeditor compiler...
-& "C:\Program Files\MetaTrader 5\metaeditor64.exe" /compile:"$FileToCompile" /log:"$LogFile" /inc:"C:\Users\Flavio\AppData\Roaming\MetaQuotes\Terminal\83D4764E0403A8685E84D6FCAB361879\MQL5" | Out-Null
+& "C:\Program Files (x86)\TMGM MT4 Terminal\metaeditor.exe" /compile:"$FileToCompile" /log:"$LogFile" /inc:"C:\Users\asbas\AppData\Roaming\MetaQuotes\Terminal\03C90BB4CD8026339921C49182082508\MQL4" | Out-Null
 
 #get some clean real state and tells the user what is being compiled (just the file name, no path)...
 "";"";"";"";""
@@ -44,4 +44,4 @@ $Log | ForEach-Object {
 }
 
 #get the MT Terminal back if all went well...
-if ( $WhichColor -eq "Green") { & "C:\Program Files\MetaTrader 5\terminal64.exe" }
+if ( $WhichColor -eq "Green") { & "C:\Program Files (x86)\TMGM MT4 Terminal\terminal.exe" }
