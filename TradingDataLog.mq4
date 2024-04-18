@@ -5,7 +5,7 @@
 //+------------------------------------------------------------------+
 #property copyright "Dian Basit"
 #property link      "https://www.mql5.com"
-#property version   "1.00"
+#property version   "1.1"
 #property strict
 
 //+------------------------------------------------------------------+
@@ -21,6 +21,7 @@ double startDayEquity;
 double startDayBalance;
 
 int currentDay;
+int currentMonth;
 int lastDay = -1;
 string dateString;
 string fileName;
@@ -63,14 +64,19 @@ void OnTick()
   {
 //---
    currentDay = Day();
+   currentMonth = Month();
 
    if(currentDay!=lastDay)
      {
       // this will always execute when program is installed initially
       lastDay = currentDay;
-      if(currentDay < 10)
+      if((currentDay < 10) && (currentMonth < 10)) // if both day and month are less than 10
+         dateString = StringFormat("%d0%d0%d", Year(), Month(), Day());
+      else if (currentDay < 10) // if only day is less than 10
          dateString = StringFormat("%d%d0%d", Year(), Month(), Day());
-      else
+      else if (currentMonth < 10) // if only month is less than 10
+         dateString = StringFormat("%d0%d%d", Year(), Month(), Day());
+      else // if none are less than 10
          dateString = StringFormat("%d%d%d", Year(), Month(), Day());
       fileName = accountName+"_log_"+dateString+".csv"; // this is more important
 
