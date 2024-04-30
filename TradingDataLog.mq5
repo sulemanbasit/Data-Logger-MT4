@@ -22,7 +22,7 @@ double highestDayEquity;
 double lowestDayEquity;
 
 int OnInit()
-{
+ {
     accountName=Account_Name;
     startDayBalance = Start_Day_Balance;
     startDayEquity = Start_Day_Equity;
@@ -31,16 +31,40 @@ int OnInit()
     if (startDayEquity <= 0) startDayEquity = AccountInfoDouble(ACCOUNT_EQUITY);
 
     return(INIT_SUCCEEDED);
-}
+ }
 
 void OnDeinit(const int reason)
-{
+ {
 //---
 
+ }
+ 
+int TimeYear(datetime time)
+{
+    return (int)(time / (365 * 24 * 60 * 60) + 1970); // Assuming 365 days in a year
+}
+
+int TimeMonth(datetime time)
+{
+    int year = TimeYear(time);
+    datetime startOfYear = StringToTime(year + ".01.01 00:00");
+    int days = (int)((time - startOfYear) / (24 * 60 * 60));
+    int month = days / 30 + 1; // Assuming 30 days in a month
+    return month;
+}
+
+int TimeDay(datetime time)
+{
+    int year = TimeYear(time);
+    int month = TimeMonth(time);
+    datetime startOfMonth = StringToTime(year + "." + month + ".01 00:00");
+    int days = (int)((time - startOfMonth) / (24 * 60 * 60));
+    int day = days % 30 + 1; // Assuming 30 days in a month
+    return day;
 }
 
 void OnTick()
-{
+ {
    //---
    currentDay = TimeDay(TimeCurrent());
    currentMonth = TimeMonth(TimeCurrent());
@@ -111,10 +135,10 @@ void OnTick()
    ObjectCreate(0, "Label_0", OBJ_LABEL, 0, 0, 0);
    ObjectSetString(0, "Label_0", OBJPROP_TEXT, fileName);
    ObjectSetInteger(0, "Label_0", OBJPROP_COLOR, clrWhite);
-}
+ }
 
 void recordData(string name, string date, string seconds, string balance, string equity, string delta, string diffPercentage, string highestBalance, string lowestBalance, string highestEquity, string lowestEquity, string usedMargin, string freeMargin)
-{
+ {
    int fileHandle = FileOpen(name, FILE_READ | FILE_WRITE | FILE_CSV | FILE_ANSI, ',');
    if(fileHandle != INVALID_HANDLE)
    {
@@ -123,13 +147,13 @@ void recordData(string name, string date, string seconds, string balance, string
       FileWrite(fileHandle, dataRow);
       FileClose(fileHandle);
    }
-}
+ }
 
 void drawLabel(string id, string text, int objectIndex = 0, color colour = clrWhite, double xDistance = 30, int fontSize = 24, string font = "Arial Bold")
-{
+ {
    ObjectCreate(0, id, OBJ_LABEL, 0, 0, 0);
-   ObjectSetText(id, text, fontSize, font, colour);
+   ObjectSetString(0, text, OBJPROP_TEXT, font, colour);
    ObjectSetInteger(0, id, OBJPROP_CORNER, CORNER_LEFT_UPPER);
-   ObjectSetDouble(0, id, OBJPROP_XDISTANCE, xDistance);
+   ObjectSetDouble(0, id, OBJPROP_PRICE, xDistance);
    ObjectSetInteger(0, id, OBJPROP_YDISTANCE, 16 * (1 + objectIndex));
-}
+ }
